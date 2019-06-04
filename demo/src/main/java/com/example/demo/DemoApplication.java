@@ -7,7 +7,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.example.demo.ioc.Linea;
 import com.example.demo.ioc.Punto;
+import com.example.demo.ioc.Servicio;
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
@@ -24,6 +26,10 @@ public class DemoApplication implements CommandLineRunner {
 	private Punto p2;
 	@Value("${mi.valor}")
 	private String valor;
+	@Autowired
+	private Servicio srv;
+	@Autowired
+	private Linea linea;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -31,6 +37,8 @@ public class DemoApplication implements CommandLineRunner {
 		punto.setX(100);
 		System.out.println(p2);
 		System.out.println(valor);
+		System.out.println(srv.message());
+		System.out.println(linea);
 		
 	}
 

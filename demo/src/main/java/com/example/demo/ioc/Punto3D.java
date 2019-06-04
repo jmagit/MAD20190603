@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Qualifier("3d")
-public class Punto3D extends Punto {
+public class Punto3D extends Punto implements Servicio {
 	private int z = 3;
 
 	public int getZ() {
@@ -19,6 +19,11 @@ public class Punto3D extends Punto {
 	@Override
 	public String toString() {
 		return "Punto3D [z=" + z + ", x=" + getX() + ", y=" + getY() + "]";
+	}
+
+	@Override
+	public String message() {
+		return toString();
 	}
 	
 	
