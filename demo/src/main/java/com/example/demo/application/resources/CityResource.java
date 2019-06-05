@@ -50,8 +50,8 @@ public class CityResource {
 	public ResponseEntity<Object> create(@Valid @RequestBody CityDTO source)
 			throws BadRequestException, InvalidDataException {
 		City item = CityDTO.from(source);
-		if (srv.notIsValid(item))
-			throw new BadRequestException("Datos invalidos");
+//		if (srv.notIsValid(item))
+//			throw new BadRequestException("Datos invalidos");
 		srv.add(item);
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(item.getCityId())

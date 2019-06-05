@@ -11,6 +11,9 @@ import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
@@ -32,17 +35,21 @@ public class City implements Serializable {
 	private String city;
 
 	@Column(name = "last_update")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss")
+
 	private Timestamp lastUpdate;
 
 	// bi-directional many-to-one association to Address
 	@OneToMany(mappedBy = "city")
 	@Valid
+	@JsonIgnore
 	private List<Address> addresses;
 
 	// bi-directional many-to-one association to Country
 	@ManyToOne
 	@JoinColumn(name = "country_id")
 	@NotNull
+	@JsonIgnore
 	private Country country;
 
 	public City() {
@@ -142,6 +149,7 @@ public class City implements Serializable {
 	public Set<ConstraintViolation<City>> validate() {
 		return validator.validate(this);
 	}
+	@JsonIgnore
 	public boolean isValid() {
 		return validate().size() == 0;
 	}
