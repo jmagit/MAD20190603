@@ -1,5 +1,12 @@
 package com.example.demo;
 
+import java.util.Optional;
+import java.util.Set;
+
+import javax.transaction.Transactional;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,8 +16,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Lazy;
 
+import com.example.demo.domain.contracts.CityService;
 import com.example.demo.domain.dtos.CityDTO;
 import com.example.demo.domain.dtos.CityShortDTO;
+import com.example.demo.domain.entities.City;
+import com.example.demo.domain.entities.Country;
 import com.example.demo.infraestructure.repositories.CityRepository;
 import com.example.demo.ioc.Linea;
 import com.example.demo.ioc.Punto;
@@ -39,7 +49,13 @@ public class DemoApplication implements CommandLineRunner {
 	@Autowired
 	@Lazy
 	private CityRepository dao;
+	@Autowired
+	private CityService srvCity;
 	
+	@Autowired
+	private Validator validator;
+
+	@Transactional
 	@Override
 	public void run(String... args) throws Exception {
 //		System.out.println(punto.toString());
@@ -55,7 +71,33 @@ public class DemoApplication implements CommandLineRunner {
 //			.forEach(item -> System.out.println(item));
 //		dao.findByCityIdNotNull(CityShortDTO.class).stream()
 //			.forEach(item -> System.out.println(item.getCity()));
-		dao.findByCityStartingWithOrderByCityIdDesc("A").forEach(item -> System.out.println(item));
+		// dao.findByCityStartingWithOrderByCityIdDesc("A").forEach(item -> System.out.println(item));
+//			City city = new City(999, "", new Country(87));
+//			Set<ConstraintViolation<City>> constraintViolations =  
+//					validator.validate( city );
+//			if(constraintViolations.size() > 0) {
+//				System.out.println("Errores");
+//				constraintViolations.forEach(item -> System.out.println(item.getMessage()));
+//			} else {
+//				dao.save(city);
+//			}
+//			if(city.isValid()) {
+//				dao.save(city);
+//			} else {
+//				System.out.println("Errores");
+//				city.validate().forEach(item -> System.out.println(item.getMessage()));
+//				
+//			}
+//			dao.findAll().forEach(item -> System.out.println(item));
+//			Optional<City> rslt = dao.findById(1);
+//			if(rslt.isPresent()) {
+//				System.out.println(rslt.get());
+//				rslt.get().getAddresses()
+//					.forEach(item -> System.out.println(item));
+//			}
+//		srvCity.delete(999);
+//		srvCity.add(new City(999, "Madriddddd", new Country(87)));
+//		srvCity.getAll().forEach(item -> System.out.println(item));
 	}
 
 }
