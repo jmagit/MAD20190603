@@ -3,10 +3,14 @@ package com.example.demo.application.resources;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +26,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.domain.contracts.CityService;
 import com.example.demo.domain.dtos.CityDTO;
+import com.example.demo.domain.entities.Address;
 import com.example.demo.domain.entities.City;
+import com.example.demo.domain.entities.Country;
 import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.InvalidDataException;
 import com.example.demo.exceptions.NotFoundException;
@@ -34,8 +40,14 @@ public class CityResource {
 	private CityService srv;
 
 	@GetMapping
-	public List<City> getAll() {
-		return srv.getAll();
+	public List<CityDTO> getAll() {
+		return srv.getAll().stream()
+				.map(item -> CityDTO.from(item))
+				.collect(Collectors.toList());
+	}
+	@GetMapping(path = "/pagina")
+	public Page<City> getAll(Pageable page) {
+		return srv.getAll(page);
 	}
 
 	@GetMapping("/{id}")
@@ -44,6 +56,23 @@ public class CityResource {
 		if (!rslt.isPresent())
 			throw new NotFoundException();
 		return CityDTO.from(rslt.get());
+	}
+
+	@Transactional
+	@GetMapping("/{id}/direcciones")
+	public List<Address> getDirecciones(@PathVariable int id) throws NotFoundException {
+		Optional<City> rslt = srv.get(id);
+		if (!rslt.isPresent())
+			throw new NotFoundException();
+		return rslt.get().getAddresses();
+	}
+	@Transactional
+	@GetMapping("/{id}/pais")
+	public Country getPais(@PathVariable int id) throws NotFoundException {
+		Optional<City> rslt = srv.get(id);
+		if (!rslt.isPresent())
+			throw new NotFoundException();
+		return rslt.get().getCountry();
 	}
 
 	@PostMapping

@@ -143,8 +143,8 @@ public class City implements Serializable {
 	}
 
 	@Autowired
-	@Transient
-	private Validator validator;
+//	@Transient
+	private static Validator validator;
 
 	public Set<ConstraintViolation<City>> validate() {
 		return validator.validate(this);
