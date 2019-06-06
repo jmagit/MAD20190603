@@ -33,7 +33,14 @@ import com.example.demo.exceptions.BadRequestException;
 import com.example.demo.exceptions.InvalidDataException;
 import com.example.demo.exceptions.NotFoundException;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 @RestController
+@Api(value = "Servicio de Ciudades", description = "API que permite el mantenimiento de las ciudades")
 @RequestMapping("/ciudades")
 public class CityResource {
 	@Autowired
@@ -50,6 +57,12 @@ public class CityResource {
 		return srv.getAll(page);
 	}
 
+	@ApiOperation(value = "Recupera una ciudad", notes = "Devuelve una ciudad por su identificador" )
+	@ApiParam(name = "id", value = "Identificador de la ciudad")
+	@ApiResponses({
+		@ApiResponse(code = 200, message = "Ciudad encontrada"),
+		@ApiResponse(code = 404, message = "Ciudad no encontrada")
+	})
 	@GetMapping("/{id}")
 	public CityDTO getOne(@PathVariable int id) throws NotFoundException {
 		Optional<City> rslt = srv.get(id);
