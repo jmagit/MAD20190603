@@ -171,7 +171,7 @@ public class FilmResource {
 	public FilmEditDTO change(
 			@ApiParam(value = "Identificador de la pelicula", required = true) @PathVariable int id, 
 			@Valid @RequestBody FilmEditDTO item) throws Exception {
-		Film rslt = dao.save(FilmEditDTO.from(item));
+		Film rslt = FilmEditDTO.from(item);
 		if (notIsValid(rslt))
 			throw new InvalidDataException("Invalid");
 		if (item.getFilmId() != id)
