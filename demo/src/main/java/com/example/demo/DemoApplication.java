@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -7,7 +8,6 @@ import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +15,15 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.demo.domain.contracts.CityService;
 import com.example.demo.domain.dtos.CityDTO;
 import com.example.demo.domain.dtos.CityShortDTO;
+import com.example.demo.domain.dtos.FilmShortDTO;
 import com.example.demo.domain.entities.City;
 import com.example.demo.domain.entities.Country;
 import com.example.demo.infraestructure.repositories.CityRepository;
@@ -26,6 +31,7 @@ import com.example.demo.ioc.Linea;
 import com.example.demo.ioc.Punto;
 import com.example.demo.ioc.Servicio;
 
+import io.swagger.models.HttpMethod;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
@@ -57,6 +63,9 @@ public class DemoApplication implements CommandLineRunner {
 	
 	@Autowired
 	private Validator validator;
+
+	@Autowired 
+	private RestTemplate srvRest;
 
 	@Transactional
 	@Override
@@ -101,6 +110,16 @@ public class DemoApplication implements CommandLineRunner {
 //		srvCity.delete(999);
 //		srvCity.add(new City(999, "Madriddddd", new Country(87)));
 //		srvCity.getAll().forEach(item -> System.out.println(item));
+//		FilmShortDTO rslt = srvRest.getForObject( 
+//				"http://localhost:8002/peliculas/{id}", FilmShortDTO.class, 1);
+//		System.out.println("UNO: " + rslt.toString());
+//		ResponseEntity<List<FilmShortDTO>> response = 
+//				srvRest.exchange("http://localhost:8002/peliculas", 
+//						HttpMethod.GET,
+//						null, 
+//						new ParameterizedTypeReference<List<FilmShortDTO>>() {});
+//		List<FilmShortDTO> rslt = response.getBody();
+
 	}
 
 }
