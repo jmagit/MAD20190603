@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -31,7 +32,6 @@ import com.example.demo.ioc.Linea;
 import com.example.demo.ioc.Punto;
 import com.example.demo.ioc.Servicio;
 
-import io.swagger.models.HttpMethod;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
@@ -113,13 +113,13 @@ public class DemoApplication implements CommandLineRunner {
 //		FilmShortDTO rslt = srvRest.getForObject( 
 //				"http://localhost:8002/peliculas/{id}", FilmShortDTO.class, 1);
 //		System.out.println("UNO: " + rslt.toString());
-//		ResponseEntity<List<FilmShortDTO>> response = 
-//				srvRest.exchange("http://localhost:8002/peliculas", 
-//						HttpMethod.GET,
-//						null, 
-//						new ParameterizedTypeReference<List<FilmShortDTO>>() {});
-//		List<FilmShortDTO> rslt = response.getBody();
-
+		ResponseEntity<List<FilmShortDTO>> response = 
+				srvRest.exchange("http://localhost:8002/peliculas?mode=short", 
+						HttpMethod.GET,
+						HttpEntity.EMPTY, 
+						new ParameterizedTypeReference<List<FilmShortDTO>>() {});
+		List<FilmShortDTO> rslt = response.getBody();
+		rslt.forEach(item -> System.out.println(item));
 	}
 
 }
