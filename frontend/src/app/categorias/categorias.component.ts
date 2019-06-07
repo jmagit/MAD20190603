@@ -15,13 +15,13 @@ export class CategoriasComponent implements OnInit {
   ngOnInit() {
     this.http.get('http://localhost:8002/categorias').subscribe(
       data => this.categorias = data['content'],
-      err => console.error(err)
+      err => console.error("ERROR: " + err.message)
     );
   }
   selecciona(id: number) {
     this.http.get(`http://localhost:8002/categorias/${id}/peliculas`).subscribe(
       data => this.peliculas = data,
-      err => console.error(err)
+      err => console.error("ERROR: " + err.message)
     );
 
   }
